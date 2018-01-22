@@ -8,7 +8,7 @@
 .hsa_code_object_isa 9, 0, 0, "AMD", "AMDGPU" 
 .text
 .p2align 8
-.amdgpu_hsa_kernel Cij_Aik_Bjk_SB_MT128x128x08_K1Cij_Aik_Bjk_SB_MT128x128x08_K1:
+.amdgpu_hsa_kernel Cij_Aik_Bjk_SB_MT128x128x08_K1Cij_Aik_Bjk_SB_MT128x128x08_K1
 .amd_kernel_code_t
   is_ptr64 = 1
   enable_sgpr_kernarg_segment_ptr = 1
@@ -78,8 +78,8 @@ v_mov_b32 v[\vgprAddr+0], v[\vgprOffset0I]         // d0 lower
 v_mov_b32 v[\vgprAddr+1], 0x0                      // d0 upper
 v_mul_lo_u32 v[\vgprTmp+0], s[sgprStridesC+0], v[\vgprOffset1J] // mul d1 lower
 v_mul_hi_u32 v[\vgprTmp+1], s[sgprStridesC+0], v[\vgprOffset1J] // mul d1 upper
-v_add_u32 v[\vgprAddr+0], vcc, v[\vgprTmp+0], v[\vgprAddr+0] // accumulate d1 lower
-v_addc_u32 v[\vgprAddr+1], vcc, v[\vgprTmp+1], v[\vgprAddr+1], vcc // accumulate d1 upper
+//v_add_u32 v[\vgprAddr+0], vcc, v[\vgprTmp+0], v[\vgprAddr+0] // accumulate d1 lower
+//v_addc_u32 v[\vgprAddr+1], vcc, v[\vgprTmp+1], v[\vgprAddr+1], vcc // accumulate d1 upper
 v_lshlrev_b64 v[\vgprAddr+0:\vgprAddr+1], 0x2, v[\vgprAddr+0:\vgprAddr+1] // offset *= bytes/element
 .endm
 
@@ -89,8 +89,8 @@ v_mov_b32 v[\vgprAddr+0], v[\vgprOffset0I]         // d0 lower
 v_mov_b32 v[\vgprAddr+1], 0x0                      // d0 upper
 v_mul_lo_u32 v[\vgprTmp+0], s[sgprStridesA+0], v[\vgprOffsetK] // mul d1 lower
 v_mul_hi_u32 v[\vgprTmp+1], s[sgprStridesA+0], v[\vgprOffsetK] // mul d1 upper
-v_add_u32 v[\vgprAddr+0], vcc, v[\vgprTmp+0], v[\vgprAddr+0] // accumulate d1 lower
-v_addc_u32 v[\vgprAddr+1], vcc, v[\vgprTmp+1], v[\vgprAddr+1], vcc // accumulate d1 upper
+//v_add_u32 v[\vgprAddr+0], vcc, v[\vgprTmp+0], v[\vgprAddr+0] // accumulate d1 lower
+//v_addc_u32 v[\vgprAddr+1], vcc, v[\vgprTmp+1], v[\vgprAddr+1], vcc // accumulate d1 upper
 v_lshlrev_b64 v[\vgprAddr+0:\vgprAddr+1], 0x2, v[\vgprAddr+0:\vgprAddr+1] // offset *= bytes/element
 .endm
 
@@ -100,8 +100,8 @@ v_mov_b32 v[\vgprAddr+0], v[\vgprOffset1J]         // d0 lower
 v_mov_b32 v[\vgprAddr+1], 0x0                      // d0 upper
 v_mul_lo_u32 v[\vgprTmp+0], s[sgprStridesB+0], v[\vgprOffsetK] // mul d1 lower
 v_mul_hi_u32 v[\vgprTmp+1], s[sgprStridesB+0], v[\vgprOffsetK] // mul d1 upper
-v_add_u32 v[\vgprAddr+0], vcc, v[\vgprTmp+0], v[\vgprAddr+0] // accumulate d1 lower
-v_addc_u32 v[\vgprAddr+1], vcc, v[\vgprTmp+1], v[\vgprAddr+1], vcc // accumulate d1 upper
+//v_add_u32 v[\vgprAddr+0], vcc, v[\vgprTmp+0], v[\vgprAddr+0] // accumulate d1 lower
+//v_addc_u32 v[\vgprAddr+1], vcc, v[\vgprTmp+1], v[\vgprAddr+1], vcc // accumulate d1 upper
 v_lshlrev_b64 v[\vgprAddr+0:\vgprAddr+1], 0x2, v[\vgprAddr+0:\vgprAddr+1] // offset *= bytes/element
 .endm
 
@@ -115,19 +115,19 @@ v_mul_f32 v[\vQuotient], 0x4f800000, v[\vQuotient] //
 v_cvt_u32_f32 v[\vQuotient], v[\vQuotient]         // 
 v_mul_lo_u32 v[\vRemainder], v[\vDivisor], v[\vQuotient] // 
 v_mul_hi_u32 v[\vTmp0], v[\vDivisor], v[\vQuotient] // 
-v_sub_u32 v[\vTmp1], vcc, 0x0, v[\vRemainder]      // 
+//v_sub_u32 v[\vTmp1], vcc, 0x0, v[\vRemainder]      // 
 v_cmp_ne_i32 s[\sTmp:\sTmp+1], 0x0, v[\vTmp0]      // 
 v_cndmask_b32 v[\vRemainder], v[\vTmp1], v[\vRemainder], s[\sTmp:\sTmp+1] // 
 v_mul_hi_u32 v[\vRemainder], v[\vRemainder], v[\vQuotient] // 
-v_sub_u32 v[\vTmp0], vcc, v[\vQuotient], v[\vRemainder] // 
-v_add_u32 v[\vQuotient], vcc, v[\vQuotient], v[\vRemainder] // 
+//v_sub_u32 v[\vTmp0], vcc, v[\vQuotient], v[\vRemainder] // 
+//v_add_u32 v[\vQuotient], vcc, v[\vQuotient], v[\vRemainder] // 
 v_cndmask_b32 v[\vQuotient], v[\vQuotient], v[\vTmp0], s[\sTmp:\sTmp+1] // 
 v_mul_hi_u32 v[\vQuotient], v[\vQuotient], v[\vDividend] // 
 v_mul_lo_u32 v[\vRemainder], v[\vQuotient], v[\vDivisor] // 
-v_sub_u32 v[\vTmp0], vcc, v[\vDividend], v[\vRemainder] // 
+//v_sub_u32 v[\vTmp0], vcc, v[\vDividend], v[\vRemainder] // 
 v_cmp_ge_u32 s[\sTmp:\sTmp+1], v[\vDividend], v[\vRemainder] // 
-v_add_u32 v[\vRemainder], vcc, 0x1, v[\vQuotient]  // 
-v_add_u32 v[\vTmp1], vcc, -1, v[\vQuotient]        // 
+//v_add_u32 v[\vRemainder], vcc, 0x1, v[\vQuotient]  // 
+//v_add_u32 v[\vTmp1], vcc, -1, v[\vQuotient]        // 
 v_cmp_le_u32 vcc, v[\vDivisor], v[\vTmp0]          // 
 s_and_b64 vcc, s[\sTmp:\sTmp+1], vcc               // 
 v_cndmask_b32 v[\vQuotient], v[\vQuotient], v[\vRemainder], vcc // 
@@ -135,7 +135,7 @@ v_cndmask_b32 v[\vQuotient], v[\vTmp1], v[\vQuotient], s[\sTmp:\sTmp+1] //
 v_cmp_ne_i32 vcc, 0x0, v[\vDivisor]                // 
 v_cndmask_b32 v[\vQuotient], -1, v[\vQuotient], vcc // final result
 v_mul_lo_u32 v[\vRemainder], v[\vQuotient], v[\vDivisor] // 
-v_sub_u32 v[\vRemainder], vcc, v[\vDividend], v[\vRemainder] // final result
+//v_sub_u32 v[\vRemainder], vcc, v[\vDividend], v[\vRemainder] // final result
 .endm
 
 /******************************************/
@@ -313,13 +313,13 @@ s_addc_u32 s[sgprAddressB], s[sgprOffsetB], s[sgprAddressB] // addrB += offsetB 
 // size0 = (size0I + MT0I - 1) / MT0I;
 v_mov_b32 v0, s[sgprSizesFree+0]                   // 
 s_mov_b32 s31, 0x7f                                // 
-v_add_u32 v0, vcc, s31, v0                         // v0 = size0+MT0-1
+//v_add_u32 v0, vcc, s31, v0                         // v0 = size0+MT0-1
 v_lshrrev_b32 v3, 7, v0                            // v3 = v0 / 128
 v_readfirstlane_b32 s[sgprNumWorkGroups0], v3      // 
 // size1 = (size1J + MT1J - 1) / MT1J;
 v_mov_b32 v0, s[sgprSizesFree+1]                   // 
 s_mov_b32 s31, 0x7f                                // 
-v_add_u32 v0, vcc, s31, v0                         // v0 = size1+MT1-1
+//v_add_u32 v0, vcc, s31, v0                         // v0 = size1+MT1-1
 v_lshrrev_b32 v3, 7, v0                            // v3 = v0 / 128
 v_readfirstlane_b32 s[sgprNumWorkGroups1], v3      // 
 
@@ -334,18 +334,18 @@ v_readfirstlane_b32 s[sgprNumWorkGroups1], v3      //
 // nwg0 = (size0I + MT0I - 1) / MT0I;
 v_mov_b32 v2, s[sgprSizesFree+0]                   // 
 s_mov_b32 s32, 0x7f                                // 
-v_add_u32 v2, vcc, s32, v2                         // v2 = size0+MT0-1
+//v_add_u32 v2, vcc, s32, v2                         // v2 = size0+MT0-1
 v_lshrrev_b32 v2, 7, v2                            // v2 = v2 / 128
 // nwg1 = (size1J + MT1J - 1) / MT1J;
 v_mov_b32 v3, s[sgprSizesFree+1]                   // 
 s_mov_b32 s32, 0x7f                                // 
-v_add_u32 v3, vcc, s32, v3                         // v3 = size1+MT1-1
+//v_add_u32 v3, vcc, s32, v3                         // v3 = size1+MT1-1
 v_lshrrev_b32 v3, 7, v3                            // v3 = v3 / 128
 v_mov_b32 v6, s[sgprWorkGroup1]                    // wg1
 v_lshrrev_b32 v4, 3, v6                            // v4 = v6 / 8
 v_and_b32 v5, 7, v6                                // v5 = v6 % 8
 v_mul_lo_u32 v5, v5, v2                            // (wg1 % WGM)*nwg0
-v_add_u32 v5, vcc, s[sgprWorkGroup0], v5           // wgSerial = wg0 + (wg1 % WGM)*nwg0
+//v_add_u32 v5, vcc, s[sgprWorkGroup0], v5           // wgSerial = wg0 + (wg1 % WGM)*nwg0
 // numFullBlocks = (nwg1) / WGM
 v_lshrrev_b32 v2, 3, v3                            // v2 = v3 / 8
 v_and_b32 v7, 7, v3                                // v7 = v3 % 8
@@ -353,7 +353,7 @@ v_cmp_lt_u32 s[32:33], v4, v2                      // blockId < numFullBlocks
 v_cndmask_b32 v2, v7, 0x8, s[32:33]                // blockWidth = (blockId < numFullBlocks) ? WGM : remainder
 DYNAMIC_VECTOR_DIVIDE 3 6 5 2 0 1 32
 v_mul_lo_u32 v4, v4, 8                             // blockId * WGM
-v_add_u32 v6, vcc, v6, v4                          // wg1 += blockId * WGM
+//v_add_u32 v6, vcc, v6, v4                          // wg1 += blockId * WGM
 v_readfirstlane_b32 s[sgprWorkGroup0], v3          // 
 v_readfirstlane_b32 s[sgprWorkGroup1], v6          // 
 
@@ -364,7 +364,7 @@ v_lshrrev_b32 v1, 5, v[vgprSerial]                 // v1 = v[vgprSerial] / 32
 v_and_b32 v0, 31, v[vgprSerial]                    // v0 = v[vgprSerial] % 32
 v_lshlrev_b32 v0, 2, v0                            // v0 = v0 * 4
 v_lshlrev_b32 v3, 7, s[sgprWorkGroup0]             // v3 = s[sgprWorkGroup0] * 128
-v_add_u32 v2, vcc, v3, v0                          // groA-tile = serial%LVCA*VW + (wgA*MTA)
+//v_add_u32 v2, vcc, v3, v0                          // groA-tile = serial%LVCA*VW + (wgA*MTA)
 
 /* global read addresses: tile offset assignment b */
 /* v5 = groB-tile = serial%LVCB + (wgB*MTB) */
@@ -373,7 +373,7 @@ v_lshrrev_b32 v4, 5, v[vgprSerial]                 // v4 = v[vgprSerial] / 32
 v_and_b32 v3, 31, v[vgprSerial]                    // v3 = v[vgprSerial] % 32
 v_lshlrev_b32 v3, 2, v3                            // v3 = v3 * 4
 v_lshlrev_b32 v6, 7, s[sgprWorkGroup1]             // v6 = s[sgprWorkGroup1] * 128
-v_add_u32 v5, vcc, v6, v3                          // groB-tile = serial%LVCB*VW + (wgB*MTB)
+//v_add_u32 v5, vcc, v6, v3                          // groB-tile = serial%LVCB*VW + (wgB*MTB)
 
 /* global read addresses: unroll assignment a */
 /* v1 */
@@ -417,14 +417,14 @@ GLOBAL_OFFSET_B vgprGlobalReadAddrB+0,  2,  7, 8 // gROB_0_0_0_0
 /* global read addresses: addresses a */
 v_mov_b32 v5, s[sgprAddressA+0]                    // 
 v_mov_b32 v6, s[sgprAddressA+1]                    // 
-v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v5 // gRAA_0_0_0_0 = addrA+grOA_0_0_0_0 (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v6, vcc // gRAA_0_0_0_0 = addrA+grOA_0_0_0_0 (upper)
+//v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v5 // gRAA_0_0_0_0 = addrA+grOA_0_0_0_0 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v6, vcc // gRAA_0_0_0_0 = addrA+grOA_0_0_0_0 (upper)
 
 /* global read addresses: addresses b */
 v_mov_b32 v5, s[sgprAddressB+0]                    // 
 v_mov_b32 v6, s[sgprAddressB+1]                    // 
-v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v5 // gRAB_0_0_0_0 = addrB+grOB_0_0_0_0 (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v6, vcc // gRAB_0_0_0_0 = addrB+grOB_0_0_0_0 (upper)
+//v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v5 // gRAB_0_0_0_0 = addrB+grOB_0_0_0_0 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v6, vcc // gRAB_0_0_0_0 = addrB+grOB_0_0_0_0 (upper)
 
 /* global read addresses: increments a */
 s_mul_i32 s31, 0x20, s[sgprStridesA]               // incr = stride*8*bytes
@@ -456,14 +456,14 @@ v_mov_b32 v[vgprGlobalReadIncsB+1], s32            //
 
 /* local write addresses: first offset a */
 v_mul_u32_u24 v[vgprLocalWriteAddrA], 0x80, v1     // lwAK*MTA
-v_add_u32 v[vgprLocalWriteAddrA], vcc, v0, v[vgprLocalWriteAddrA] // lwFOA = lwA0I + lwAK*MT0I
+//v_add_u32 v[vgprLocalWriteAddrA], vcc, v0, v[vgprLocalWriteAddrA] // lwFOA = lwA0I + lwAK*MT0I
 v_lshlrev_b32 v[vgprLocalWriteAddrA], 0x2, v[vgprLocalWriteAddrA] //  *= bytes/element
 
 /* local write addresses: first offset b */
 v_mul_u32_u24 v[vgprLocalWriteAddrB], 0x80, v4     // lwBK*MTB
-v_add_u32 v[vgprLocalWriteAddrB], vcc, v3, v[vgprLocalWriteAddrB] // lwFOB = lwB1J + lwBK*MT1J
+//v_add_u32 v[vgprLocalWriteAddrB], vcc, v3, v[vgprLocalWriteAddrB] // lwFOB = lwB1J + lwBK*MT1J
 v_lshlrev_b32 v[vgprLocalWriteAddrB], 0x2, v[vgprLocalWriteAddrB] //  *= bytes/element
-v_add_u32 v[vgprLocalWriteAddrB], vcc, 0x1000, v[vgprLocalWriteAddrB] // lwFOB = lwB1J + lwBK*MT1J + LDS_OFFSET_B=1024*4
+//v_add_u32 v[vgprLocalWriteAddrB], vcc, 0x1000, v[vgprLocalWriteAddrB] // lwFOB = lwB1J + lwBK*MT1J + LDS_OFFSET_B=1024*4
 
 /* local write addresses: final offsets a */
 
@@ -505,7 +505,7 @@ v_and_b32 v2, 255, v[vgprSerial]                   // v2 = v[vgprSerial] % 256
 s_mov_b32 s31, 0x80                                // MT0
 v_mul_lo_u32 v0, s31, v0                           // sgid*sgid*MT0
 v_lshlrev_b32 v1, 2, v1                            // v1 = v1 * 4
-v_add_u32 v[vgprLocalReadAddrA], vcc, v0, v1       // o = lroA*VW+sgid*MT0
+//v_add_u32 v[vgprLocalReadAddrA], vcc, v0, v1       // o = lroA*VW+sgid*MT0
 v_lshlrev_b32 v[vgprLocalReadAddrA], 0x2, v[vgprLocalReadAddrA] // *= bytes/element
 
 /* local read addresses: final offsets b */
@@ -514,14 +514,14 @@ v_and_b32 v1, 255, v[vgprSerial]                   // v1 = v[vgprSerial] % 256
 s_mov_b32 s31, 0x80                                // MT1
 v_mul_lo_u32 v0, s31, v0                           // sgid*sgid*MT1
 v_lshlrev_b32 v3, 2, v3                            // v3 = v3 * 4
-v_add_u32 v[vgprLocalReadAddrB], vcc, v0, v3       // o = lroB*VW+sgid*MT1
+//v_add_u32 v[vgprLocalReadAddrB], vcc, v0, v3       // o = lroB*VW+sgid*MT1
 v_lshlrev_b32 v[vgprLocalReadAddrB], 0x2, v[vgprLocalReadAddrB] // *= bytes/element
 
 /* local read addresses: declare addresses a */
 /* N/A */
 
 /* local read addresses: declare addresses b */
-v_add_u32 v[vgprLocalReadAddrB+0], vcc, 0x1000, v[vgprLocalReadAddrB+0] //  += LdsOffsetB (lower)
+//v_add_u32 v[vgprLocalReadAddrB+0], vcc, 0x1000, v[vgprLocalReadAddrB+0] //  += LdsOffsetB (lower)
 
 /* declare loop num iterations */
 v_mov_b32 v[vgprValuC+0], 0x0                      // 
@@ -606,12 +606,12 @@ flat_load_dwordx4 v[vgprG2LA+0:vgprG2LA+0+3], v[vgprGlobalReadAddrA+0:vgprGlobal
 flat_load_dwordx4 v[vgprG2LB+0:vgprG2LB+0+3], v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1] // G -> Reg 0_0_0_0
 
 /* global read inc a */
-v_add_u32  v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v[vgprGlobalReadIncsA+0+0] // gra += incAK (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v[vgprGlobalReadIncsA+0+1], vcc // gra += incAK (upper)
+//v_add_u32  v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v[vgprGlobalReadIncsA+0+0] // gra += incAK (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v[vgprGlobalReadIncsA+0+1], vcc // gra += incAK (upper)
 
 /* global read inc b */
-v_add_u32  v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v[vgprGlobalReadIncsB+0+0] // gra += incBK (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v[vgprGlobalReadIncsB+0+1], vcc // gra += incBK (upper)
+//v_add_u32  v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v[vgprGlobalReadIncsB+0+0] // gra += incBK (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v[vgprGlobalReadIncsB+0+1], vcc // gra += incBK (upper)
 s_waitcnt vmcnt(0) // wait for global read
 
 /* local write a */
@@ -651,12 +651,12 @@ flat_load_dwordx4 v[vgprG2LA+0:vgprG2LA+0+3], v[vgprGlobalReadAddrA+0:vgprGlobal
 flat_load_dwordx4 v[vgprG2LB+0:vgprG2LB+0+3], v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1] // G -> Reg 0_0_0_0
 
 /* global read inc a */
-v_add_u32  v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v[vgprGlobalReadIncsA+0+0] // gra += incAK (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v[vgprGlobalReadIncsA+0+1], vcc // gra += incAK (upper)
+//v_add_u32  v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v[vgprGlobalReadIncsA+0+0] // gra += incAK (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v[vgprGlobalReadIncsA+0+1], vcc // gra += incAK (upper)
 
 /* global read inc b */
-v_add_u32  v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v[vgprGlobalReadIncsB+0+0] // gra += incBK (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v[vgprGlobalReadIncsB+0+1], vcc // gra += incBK (upper)
+//v_add_u32  v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v[vgprGlobalReadIncsB+0+0] // gra += incBK (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v[vgprGlobalReadIncsB+0+1], vcc // gra += incBK (upper)
 
 /* iter 0 */
 
@@ -951,29 +951,29 @@ v_mov_b32 v[vgprG2LA+0+0], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LA+0+0], v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
 /* load component 1 */
 v_mov_b32 v[vgprG2LA+0+1], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LA+0+1], v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
 /* load component 2 */
 v_mov_b32 v[vgprG2LA+0+2], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LA+0+2], v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
 /* load component 3 */
 v_mov_b32 v[vgprG2LA+0+3], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LA+0+3], v[vgprGlobalReadAddrA+0:vgprGlobalReadAddrA+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrA+0+0], vcc, v[vgprGlobalReadAddrA+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrA+0+1], vcc, v[vgprGlobalReadAddrA+0+1], v119, vcc // gra += 1 (upper)
 
 /* global read b */
 /* max read address = size[n] * stride[n-1] */
@@ -992,29 +992,29 @@ v_mov_b32 v[vgprG2LB+0+0], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LB+0+0], v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
 /* load component 1 */
 v_mov_b32 v[vgprG2LB+0+1], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LB+0+1], v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
 /* load component 2 */
 v_mov_b32 v[vgprG2LB+0+2], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LB+0+2], v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
 /* load component 3 */
 v_mov_b32 v[vgprG2LB+0+3], 0x0                     // zero
 v_cmpx_lt_u64 vcc, v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1], v[116:117] // addr < maxAddr
 flat_load_dword v[vgprG2LB+0+3], v[vgprGlobalReadAddrB+0:vgprGlobalReadAddrB+0+1] // load single float
 s_or_saveexec_b64 vcc, s[34:35]                    // all threads active
-v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
-v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
+//v_add_u32 v[vgprGlobalReadAddrB+0+0], vcc, v[vgprGlobalReadAddrB+0+0], v118 // gra += 1 (lower)
+//v_addc_u32 v[vgprGlobalReadAddrB+0+1], vcc, v[vgprGlobalReadAddrB+0+1], v119, vcc // gra += 1 (upper)
 s_waitcnt vmcnt(0) // wait for global read
 s_barrier
 
@@ -1067,11 +1067,11 @@ ds_read_b128 v[vgprValuB+4:vgprValuB+4+3], v[vgprLocalReadAddrB] offset:256 // L
 
 /* local read inc a */
 s_mov_b32 s31, 0x200                               // inc
-v_add_u32 v[vgprLocalReadAddrA], vcc, s31, v[vgprLocalReadAddrA] // lrA += 512
+//v_add_u32 v[vgprLocalReadAddrA], vcc, s31, v[vgprLocalReadAddrA] // lrA += 512
 
 /* local read inc b */
 s_mov_b32 s31, 0x200                               // inc
-v_add_u32 v[vgprLocalReadAddrB], vcc, s31, v[vgprLocalReadAddrB] // lrB += 512
+//v_add_u32 v[vgprLocalReadAddrB], vcc, s31, v[vgprLocalReadAddrB] // lrB += 512
 s_waitcnt lgkmcnt(0) // wait for local read
 MAC_8x8
 s_add_u32 s[sgprLoopCounters+0], s[sgprLoopCounters+0], 0x1 // counterK++
@@ -1083,7 +1083,7 @@ label_0005:
 /* shift vector components d0 */
 v_mov_b32 v66, s[sgprWorkGroup0]                   // 
 v_mul_i32_i24 v66, -0x80, v66                      // wg*MT
-v_add_u32 v66, vcc, s[sgprSizesFree+0], v66        // wgMT = Size - wg*MT
+//v_add_u32 v66, vcc, s[sgprSizesFree+0], v66        // wgMT = Size - wg*MT
 v_mov_b32 v64, 0x80                                // MT
 v_cmp_lt_u32 s[14:15], v66, v64                    // wgMT < MT
 v_cndmask_b32 v66, v64, v66, s[14:15]              // wgMT = (wgMT < MT) ? wgMT : MT
@@ -1102,7 +1102,7 @@ v_and_b32 v74, 3, v66                              // v74 = v66 % 4
 v_mov_b32 v75, v74                                 // duplicate
 v_lshrrev_b32 v74, 2, v75                          // v74 = v75 / 4
 v_and_b32 v67, 3, v75                              // v67 = v75 % 4
-v_add_u32 v74, vcc, v73, v74                       // vId = 2 components
+//v_add_u32 v74, vcc, v73, v74                       // vId = 2 components
 v_cmp_eq_u32 s[14:15], v72, v71                    // mask
 v_mov_b32 v64, s14                                 // 
 v_mov_b32 v65, s15                                 // 
@@ -1283,7 +1283,7 @@ label_0015: // end shift0
 /* shift vector components d1 */
 v_mov_b32 v66, s[sgprWorkGroup1]                   // 
 v_mul_i32_i24 v66, -0x80, v66                      // wg*MT
-v_add_u32 v66, vcc, s[sgprSizesFree+1], v66        // wgMT = Size - wg*MT
+//v_add_u32 v66, vcc, s[sgprSizesFree+1], v66        // wgMT = Size - wg*MT
 v_mov_b32 v64, 0x80                                // MT
 v_cmp_lt_u32 s[14:15], v66, v64                    // wgMT < MT
 v_cndmask_b32 v66, v64, v66, s[14:15]              // wgMT = (wgMT < MT) ? wgMT : MT
@@ -1304,7 +1304,7 @@ v_and_b32 v74, 3, v66                              // v74 = v66 % 4
 v_mov_b32 v75, v74                                 // duplicate
 v_lshrrev_b32 v74, 2, v75                          // v74 = v75 / 4
 v_and_b32 v67, 3, v75                              // v67 = v75 % 4
-v_add_u32 v74, vcc, v72, v74                       // vId = 2 components
+//v_add_u32 v74, vcc, v72, v74                       // vId = 2 components
 v_cmp_eq_u32 s[14:15], v73, v71                    // mask
 v_mov_b32 v64, s14                                 // 
 v_mov_b32 v65, s15                                 // 
@@ -1489,8 +1489,8 @@ v_lshlrev_b32 v66, 2, v66                          // v66 = v66 * 4
 v_lshlrev_b32 v67, 2, v67                          // v67 = v67 * 4
 s_mul_i32 s14, 0x80, s[sgprWorkGroup0]             // s14 = wg0*MT0
 s_mul_i32 s15, 0x80, s[sgprWorkGroup1]             // s15 = wg1*MT1
-v_add_u32 v66, vcc, s14, v66                       // coord0 = tid0*VW + wg0*MT0
-v_add_u32 v67, vcc, s15, v67                       // coord1 = tid1*VW + wg1*MT1
+//v_add_u32 v66, vcc, s14, v66                       // coord0 = tid0*VW + wg0*MT0
+//v_add_u32 v67, vcc, s15, v67                       // coord1 = tid1*VW + wg1*MT1
 v_mov_b32 v64, s[sgprAddressC+0]                   // sgpr -> vgpr
 v_mov_b32 v65, s[sgprAddressC+1]                   // sgpr -> vgpr
 
@@ -1524,86 +1524,86 @@ label_0032:
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v0, s[sgprAlpha], v0                     // *= alpha
@@ -1633,86 +1633,86 @@ flat_store_dword v[89:90], v16 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v17, s[sgprAlpha], v17                   // *= alpha
@@ -1742,86 +1742,86 @@ flat_store_dword v[89:90], v5 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v6, s[sgprAlpha], v6                     // *= alpha
@@ -1851,86 +1851,86 @@ flat_store_dword v[89:90], v22 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v23, s[sgprAlpha], v23                   // *= alpha
@@ -1960,86 +1960,86 @@ flat_store_dword v[89:90], v35 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v40, s[sgprAlpha], v40                   // *= alpha
@@ -2069,86 +2069,86 @@ flat_store_dword v[89:90], v56 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v57, s[sgprAlpha], v57                   // *= alpha
@@ -2178,86 +2178,86 @@ flat_store_dword v[89:90], v45 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v46, s[sgprAlpha], v46                   // *= alpha
@@ -2287,14 +2287,14 @@ flat_store_dword v[89:90], v62 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v63, s[sgprAlpha], v63                   // *= alpha
@@ -2312,113 +2312,113 @@ v_mov_b32 v74, s[sgprSizesFree+1]                  // free sizes sgpr -> vgpr
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v0, s[sgprAlpha], v0                     // *= alpha
@@ -2458,113 +2458,113 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v17, s[sgprAlpha], v17                   // *= alpha
@@ -2604,113 +2604,113 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v6, s[sgprAlpha], v6                     // *= alpha
@@ -2750,113 +2750,113 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v23, s[sgprAlpha], v23                   // *= alpha
@@ -2896,113 +2896,113 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v40, s[sgprAlpha], v40                   // *= alpha
@@ -3042,113 +3042,113 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v57, s[sgprAlpha], v57                   // *= alpha
@@ -3188,113 +3188,113 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v46, s[sgprAlpha], v46                   // *= alpha
@@ -3334,17 +3334,17 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 
 /* rC *= alpha */
 v_mul_f32 v63, s[sgprAlpha], v63                   // *= alpha
@@ -3381,94 +3381,94 @@ label_0039:
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -3518,94 +3518,94 @@ flat_store_dword v[89:90], v16 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -3655,94 +3655,94 @@ flat_store_dword v[89:90], v5 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -3792,94 +3792,94 @@ flat_store_dword v[89:90], v22 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -3929,94 +3929,94 @@ flat_store_dword v[89:90], v35 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -4066,94 +4066,94 @@ flat_store_dword v[89:90], v56 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -4203,94 +4203,94 @@ flat_store_dword v[89:90], v45 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v91, v[73:74]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v92, v[75:76]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[77:78]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[79:80]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[81:82]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[83:84]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[85:86]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[87:88]                      // load C
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[89:90]                      // load C
 
 /* rC *= alpha */
@@ -4340,14 +4340,14 @@ flat_store_dword v[89:90], v62 // store C
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 GLOBAL_OFFSET_C 73, 68, 69, 70
-v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
-v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v73, vcc, v64, v73                       // addr = C + index*bytes (lo)
+//v_addc_u32 v74, vcc, v65, v74, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v75, v[73:74]                      // load C
 
 /* rC *= alpha */
@@ -4369,138 +4369,138 @@ v_mov_b32 v74, s[sgprSizesFree+1]                  // free sizes sgpr -> vgpr
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -4561,138 +4561,138 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -4753,138 +4753,138 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -4945,138 +4945,138 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 0                            // v69 = 0 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -5137,138 +5137,138 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -5329,138 +5329,138 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 0                            // v68 = 0 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x0, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -5521,138 +5521,138 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v93, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x1, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[24:25], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[24:25]                           // sgprs -> exec
 GLOBAL_OFFSET_C 77, 68, 69, 70
-v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
-v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v77, vcc, v64, v77                       // addr = C + index*bytes (lo)
+//v_addc_u32 v78, vcc, v65, v78, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v94, v[77:78]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[26:27], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[26:27]                           // sgprs -> exec
 GLOBAL_OFFSET_C 79, 68, 69, 70
-v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
-v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v79, vcc, v64, v79                       // addr = C + index*bytes (lo)
+//v_addc_u32 v80, vcc, v65, v80, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v95, v[79:80]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[28:29], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[28:29]                           // sgprs -> exec
 GLOBAL_OFFSET_C 81, 68, 69, 70
-v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
-v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v81, vcc, v64, v81                       // addr = C + index*bytes (lo)
+//v_addc_u32 v82, vcc, v65, v82, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v96, v[81:82]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[30:31], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[30:31]                           // sgprs -> exec
 GLOBAL_OFFSET_C 83, 68, 69, 70
-v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
-v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v83, vcc, v64, v83                       // addr = C + index*bytes (lo)
+//v_addc_u32 v84, vcc, v65, v84, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v97, v[83:84]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x2, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[32:33], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[32:33]                           // sgprs -> exec
 GLOBAL_OFFSET_C 85, 68, 69, 70
-v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
-v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v85, vcc, v64, v85                       // addr = C + index*bytes (lo)
+//v_addc_u32 v86, vcc, v65, v86, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v98, v[85:86]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 0, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[34:35], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[34:35]                           // sgprs -> exec
 GLOBAL_OFFSET_C 87, 68, 69, 70
-v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
-v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v87, vcc, v64, v87                       // addr = C + index*bytes (lo)
+//v_addc_u32 v88, vcc, v65, v88, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v99, v[87:88]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 1, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[36:37], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[36:37]                           // sgprs -> exec
 GLOBAL_OFFSET_C 89, 68, 69, 70
-v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
-v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v89, vcc, v64, v89                       // addr = C + index*bytes (lo)
+//v_addc_u32 v90, vcc, v65, v90, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v100, v[89:90]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 2, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[38:39], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[38:39]                           // sgprs -> exec
 GLOBAL_OFFSET_C 91, 68, 69, 70
-v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
-v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v91, vcc, v64, v91                       // addr = C + index*bytes (lo)
+//v_addc_u32 v92, vcc, v65, v92, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v101, v[91:92]                     // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
@@ -5713,18 +5713,18 @@ s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
 /* calc coords, apply mask, and issue loads (if necessary) */
 v_lshlrev_b32 v68, 6, 1                            // v68 = 1 * 64
-v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
-v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, 3, v68                         // tmp0 = d0*sg0*VW + vc0
+//v_add_u32 v68, vcc, v66, v68                       // coord0 += d0*sg0*VW + vc0
 v_lshlrev_b32 v69, 6, 1                            // v69 = 1 * 64
-v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
-v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, 0x3, v69                       // tmp1 = d1*sg1*VW + vc1
+//v_add_u32 v69, vcc, v67, v69                       // coord1 += d1*sg1*VW + vc1
 v_cmp_lt_u32 s[16:17], v68, v73                    // coord0 < size0
 v_cmp_lt_u32 s[18:19], v69, v74                    // coord1 < size1
 s_and_b64 s[22:23], s[16:17], s[18:19]             // in0 && in1
 s_mov_b64 exec, s[22:23]                           // sgprs -> exec
 GLOBAL_OFFSET_C 75, 68, 69, 70
-v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
-v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
+//v_add_u32 v75, vcc, v64, v75                       // addr = C + index*bytes (lo)
+//v_addc_u32 v76, vcc, v65, v76, vcc                 // addr = C + index*bytes (hi)
 flat_load_dword v77, v[75:76]                      // load C
 s_mov_b64 exec, s[14:15]                           // full mask -> exec
 
